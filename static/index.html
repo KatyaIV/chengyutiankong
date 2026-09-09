@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+  <title>成语大闯关 - 新中式水墨填字</title>
+  
+  <!-- Google Fonts: 思源宋体 (Noto Serif SC) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- 宣纸质感与水墨背景 -->
+  <div class="xuan-paper-bg"></div>
+  <div class="ink-wash-overlay"></div>
+
+  <main class="app-container">
+    <!-- ================= 1. 首页模式 (Start Screen) ================= -->
+    <section id="start-screen" class="screen active">
+      <div class="ancient-card home-card">
+        <!-- 古风云纹角饰 -->
+        <div class="cloud-corner top-left"></div>
+        <div class="cloud-corner top-right"></div>
+        <div class="cloud-corner bottom-left"></div>
+        <div class="cloud-corner bottom-right"></div>
+
+        <div class="header-seal-wrap">
+          <div class="ink-seal">雅</div>
+        </div>
+
+        <h1 class="main-title">
+          <span>成</span><span>语</span><span>大</span><span>闯</span><span>关</span>
+        </h1>
+        <p class="subtitle">—— 挥毫践墨 · 妙解成语 ——</p>
+
+        <!-- 历史最高分卷轴展示 -->
+        <div class="scroll-badge">
+          <div class="scroll-handle left"></div>
+          <div class="scroll-body">
+            <span class="scroll-label">历史最高</span>
+            <span class="scroll-value" id="home-highscore">0</span>
+            <span class="scroll-unit">分</span>
+          </div>
+          <div class="scroll-handle right"></div>
+        </div>
+
+        <!-- 规则简述卡片 -->
+        <div class="rules-box">
+          <div class="rule-item">
+            <span class="rule-icon">⏳</span>
+            <span>每题限时 <strong>15</strong> 秒</span>
+          </div>
+          <div class="rule-item">
+            <span class="rule-icon">❤️</span>
+            <span>共有 <strong>3</strong> 次失误机会</span>
+          </div>
+          <div class="rule-item">
+            <span class="rule-icon">✍️</span>
+            <span>单字填空 · 答对加 <strong>1</strong> 分</span>
+          </div>
+        </div>
+
+        <!-- 开始游戏按钮 -->
+        <button id="start-btn" class="cinnabar-btn">
+          <span class="btn-ink-circle"></span>
+          <span class="btn-text">开始游戏</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= 2. 游戏主界面 (Game Screen) ================= -->
+    <section id="game-screen" class="screen">
+      <!-- 顶部仪表盘 -->
+      <header class="game-header">
+        <div class="header-left">
+          <div class="status-pill score-pill">
+            <span class="pill-label">得分</span>
+            <span class="pill-value" id="current-score">0</span>
+          </div>
+          <div class="status-pill high-pill">
+            <span class="pill-label">最高</span>
+            <span class="pill-value" id="game-highscore">0</span>
+          </div>
+        </div>
+
+        <!-- 生命值印章 (3条命) -->
+        <div class="lives-container" id="lives-container">
+          <div class="life-seal active" data-index="1">
+            <svg class="plum-icon" viewBox="0 0 24 24">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          </div>
+          <div class="life-seal active" data-index="2">
+            <svg class="plum-icon" viewBox="0 0 24 24">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          </div>
+          <div class="life-seal active" data-index="3">
+            <svg class="plum-icon" viewBox="0 0 24 24">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          </div>
+        </div>
+      </header>
+
+      <!-- 15秒倒计时进度条 -->
+      <div class="timer-wrapper">
+        <div class="timer-bar-bg">
+          <div class="timer-bar-fill" id="timer-bar"></div>
+        </div>
+        <div class="timer-num" id="timer-text">15s</div>
+      </div>
+
+      <!-- 成语字格与答题主卡片 -->
+      <div class="question-stage">
+        <!-- 答题反馈提示框 -->
+        <div class="feedback-banner" id="feedback-banner">
+          <span class="feedback-text">妙哉！回答正确</span>
+        </div>
+
+        <!-- 动态生成的米字格成语字块 -->
+        <div class="idiom-tiles-container" id="idiom-tiles">
+          <!-- 由 JS 动态渲染 4~8 个米字格字块 -->
+        </div>
+
+        <div class="guide-tip">点击挖空字块可直接呼出输入法</div>
+      </div>
+
+      <!-- 底部输入与操作区 -->
+      <div class="input-action-bar">
+        <!-- 隐形输入框：用于自动唤起移动端虚拟键盘 -->
+        <input 
+          type="text" 
+          id="hidden-input" 
+          class="hidden-native-input" 
+          maxlength="1" 
+          autocomplete="off" 
+          autocorrect="off" 
+          autocapitalize="off" 
+          spellcheck="false"
+        >
+
+        <!-- 显式古典单字输入框 -->
+        <div class="char-input-wrapper">
+          <input 
+            type="text" 
+            id="visible-char-input" 
+            class="char-input-box" 
+            maxlength="1" 
+            placeholder="填" 
+            autocomplete="off" 
+            autocorrect="off"
+          >
+        </div>
+
+        <button id="submit-char-btn" class="cinnabar-btn submit-btn">
+          <span>确认</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= 3. 结算弹窗 (Game Over Modal) ================= -->
+    <div id="gameover-modal" class="modal-backdrop">
+      <div class="scroll-board">
+        <!-- 卷轴轴杆装饰 -->
+        <div class="scroll-roll-top"></div>
+
+        <div class="board-body">
+          <div class="board-seal">结 算</div>
+          <h2 class="board-title">闯关终局</h2>
+          <p class="board-desc">笔落惊风雨，诗成泣鬼神</p>
+
+          <!-- 新纪录徽章 -->
+          <div id="new-record-badge" class="new-record-badge hidden">
+            <span>🎉 独占鳌头 · 刷新纪录！</span>
+          </div>
+
+          <!-- 成绩汇总 -->
+          <div class="score-summary">
+            <div class="summary-item">
+              <span class="label">本次得分</span>
+              <span class="val" id="final-score">0</span>
+            </div>
+            <div class="summary-item">
+              <span class="label">历史最高</span>
+              <span class="val" id="final-highscore">0</span>
+            </div>
+          </div>
+
+          <!-- 按钮组 -->
+          <div class="modal-btn-group">
+            <button id="restart-btn" class="cinnabar-btn">
+              <span>再战一局</span>
+            </button>
+            <button id="home-btn" class="ink-outline-btn">
+              <span>返回首页</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="scroll-roll-bottom"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/static/main.js"></script>
+</body>
+</html>
