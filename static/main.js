@@ -227,9 +227,18 @@
     startTimer(q.time_limit || 15);
   }
 
+  // function focusInput() {
+  //   setTimeout(() => {
+  //     dom.visibleInput.focus();
+  //   }, 50);
+  // }
+
+  // 修改 main.js 第 180 行附近的 focusInput 函数
   function focusInput() {
     setTimeout(() => {
       dom.visibleInput.focus();
+      // 聚焦时确保输入框滚动到可视区域内
+      dom.visibleInput.scrollIntoView({ block: "nearest", behavior: "smooth" });
     }, 50);
   }
 
@@ -414,6 +423,37 @@
         focusInput();
       }
     });
+
+
+        // ----------------- 移动端软键盘弹起与自适应布局优化 -----------------
+    function updateAppHeight() {
+      // 优先获取 visualViewport 高度，兼容 iOS/Android 键盘弹起情况
+      const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+      document.documentElement.style.setProperty('--app-height', `${vh}px`);
+    }
+
+    // 初始化视口高度
+    updateAppHeight();
+
+    // 监听窗口大小及 visualViewport 变化
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', updateAppHeight);
+      window.visualViewport.addEventListener('scroll', updateAppHeight);
+    } else {
+      window.addEventListener('resize', updateAppHeight);
+    }
+
+    // 解决 iOS 输入法关闭后页面底部留白错位的问题
+    dom.visibleInput.addEventListener('blur', () => {
+      window.scrollTo(0, 0);
+      updateAppHeight();
+    });
+    // ------------------------------------------------------------------
+
+
+
+
+
 
     // 首次触摸屏幕时解锁音频上下文
     document.addEventListener("touchstart", initAudio, { once: true });

@@ -70,13 +70,16 @@ html, body {
 .app-container {
   width: 100%;
   max-width: 480px;
-  height: 100%;
-  height: 100dvh;
+  /* height: 100%;
+  height: 100dvh; */
+  /* 使用 JS 动态赋值的 CSS 变量，兜底用 100vh */
+  height: var(--app-height, 100vh);
   margin: 0 auto;
   position: relative;
   display: flex;
   flex-direction: column;
   padding: 16px 20px calc(16px + env(safe-area-inset-bottom));
+  overflow: hidden; /* 防止键盘弹出产生全局滚动条 */
 }
 
 /* 页面切换控制器 */
