@@ -34,6 +34,8 @@
 html, body {
   width: 100%;
   height: 100%;
+  margin: 0;
+  padding: 0;
   overflow: hidden;
   font-family: "Noto Serif SC", "Songti SC", "SimSun", "STSong", serif;
   color: var(--c-ink);
@@ -70,16 +72,19 @@ html, body {
 .app-container {
   width: 100%;
   max-width: 480px;
-  /* height: 100%;
-  height: 100dvh; */
-  /* 使用 JS 动态赋值的 CSS 变量，兜底用 100vh */
-  height: var(--app-height, 100vh);
+  height: 100%;
+  height: 100dvh;
   margin: 0 auto;
-  position: relative;
+  /* position: relative; */
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   padding: 16px 20px calc(16px + env(safe-area-inset-bottom));
-  overflow: hidden; /* 防止键盘弹出产生全局滚动条 */
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* 页面切换控制器 */
@@ -548,14 +553,28 @@ html, body {
 }
 
 /* 隐藏的原生输入框 (用于捕获手机软键盘焦点) */
-.hidden-native-input {
+/* .hidden-native-input {
   position: absolute;
   opacity: 0;
   pointer-events: none;
   width: 1px;
   height: 1px;
   left: -9999px;
+} */
+
+/* 修改 style.css 第 556~563 行 */
+.hidden-native-input {
+  position: absolute;
+  top: 0;         /* 改为 top: 0 */
+  left: 0;        /* 改为 left: 0，千万不能用 -9999px */
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
 }
+
+
+
 
 /* 显式单字输入框 */
 .char-input-wrapper {
